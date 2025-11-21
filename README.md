@@ -64,10 +64,12 @@
   - POST /api/users         -crea un usuario
   - PUT  api/users/:uid     -Actualizar un usuario
   - DELETE api/users/:uid   -elimina un usuario
+
   - GET  /crud/users        -lista los usuarios (handlebars), solo "admin"
   - POST /crud/users        -crea un usuario -ingresar: email,password,first_name,last_name,age,role
   - PUT  /crud/users/:id    -Actualiza un usuario existente 
   - DELETE /crud/users/:id  -Elimina un usuario
+  
   - POST /api/sessions/login    -debe ingresarse email y password
   - POST /api/sessions/logout   
   - GET  /api/sessions/current  -muestra todos los atributos del usuario autenticado
