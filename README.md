@@ -59,22 +59,22 @@
 
 ### user (`/api/users`)
 
-  - GET  /api/users         (lista los usuarios)
-  - GET  /api/users/:uid    (lista un usuario)
-  - POST /api/users         (crea un usuario) 
-  - PUT  api/users/:uid     (Actualizar un usuario)
-  - DELETE api/users/:uid   (elimina un usuario)
+  - GET  /api/users         -lista los usuarios
+  - GET  /api/users/:uid    -lista un usuario
+  - POST /api/users         -crea un usuario
+  - PUT  api/users/:uid     -Actualizar un usuario
+  - DELETE api/users/:uid   -elimina un usuario
 
   - GET  /crud/users        (lista los usuarios (VIEW de handlebars), solo "admin" con formulario de "alta" y botones de "baja" y "modificacion" )
-  - POST /crud/users        (crea un usuario -ingresar: email,password,first_name,last_name,age,role -)
-  - PUT  /crud/users/:id    (Actualiza un usuario existente -puede ingresar: email,first_name,last_name,age,role -)
-  - DELETE /crud/users/:id  (Elimina un usuario)
+  - POST /crud/users        -crea un usuario -ingresar: email,password,first_name,last_name,age,role -)
+  - PUT  /crud/users/:id    -Actualiza un usuario existente 
+  - DELETE /crud/users/:id  -Elimina un usuario
  
-  - POST /api/sessions/login    (debe ingresarse email y password))
+  - POST /api/sessions/login    -debe ingresarse email y password
   - POST /api/sessions/logout   
-  - GET  /api/sessions/current  (muestra todos los atributos del usuario autenticado)
-  - POST /api/sessions/recupero  (recupera la password)
-  - POST /api/sessions/register  (crear usuario)
+  - GET  /api/sessions/current  -muestra todos los atributos del usuario autenticado
+  - POST /api/sessions/recupero  -recupera la password
+  - POST /api/sessions/register  -crear usuario
 
 ### Productos (`/api/products`)
 
@@ -83,6 +83,7 @@
   - POST /api/products - Crear nuevo producto    (** io.emit)
   - PUT /api/products/:pid  - Update products
   - DELETE /api/products/:pid - Elimina un producto específico.  (** io.emit)
+
 **Ejemplos:**
 ```bash
   GET http://localhost:8080/api/products/
