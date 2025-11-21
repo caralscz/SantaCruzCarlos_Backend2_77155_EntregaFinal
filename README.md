@@ -55,6 +55,81 @@
 ---
 
 
+## Estructura del Proyecto
+
+```
+Comision77155entregaFinal/
++- src/ 
+¦  +- app.js                    # main: Servidor principal
+¦  +- config/                   # archivos de configuración
+¦  ¦  +- envs.js                # aquí definimos variables de entorno
+¦  ¦  +- db.js                  # Conexión a Mongo usando Mongoose
+¦  ¦  +- passportConfig.js      # Passport , Estrategia JWT, Serialización de usuario
+¦  +- dao/                       
+¦  ¦  +- productsManager.js     # Clases estáticas con métodos CRUD. Plantilla
+¦  ¦  ¦                         #     u “objeto constructor” de "products"
+¦  ¦  +- cartsManager.js        # idem para "carts"
+¦  ¦  +- ticketDAO.js         
+¦  ¦  +- ticketManager.js     
+¦  ¦  +- userDao.js           
+¦  ¦  +- models/                # 
+¦  ¦     +- productsModel.js    # productSchema
+¦  ¦     +- cartsModel.js       # cartProductSchema
+¦  ¦     +- ticketModel.js
+¦  ¦     +- userModel.js        # userCollection, esquema de Usuarios
+¦  +- dto/
+¦  ¦     +- UserDTO.js
+¦  +- middlewares
+¦  ¦     +-auth.js 
+¦  ¦     +-roles.js
+¦  +- controllers
+¦  ¦  +- cartController.js
+¦  ¦  +- usersController.js
+¦  +- public/                    
+¦  ¦  +- imgShop/               # imagenes refernciadas desde mongoDB
+¦  ¦  +- img/                   # imagenes otras
+¦  ¦  +- css/                   # 
+¦  ¦     +- styles.css          # hoja de estilos
+¦  +- routes/ 
+¦  ¦  +- productsRouter.js      # Rutas de productos. REST completo para products
+¦  ¦  +- cartsRouter.js         # Rutas de carritos. REST completo para carts
+¦  ¦  +- viewsRouter.js         # Rutas para las vistas de handlebars 
+¦  ¦  +- crudUsersRouter.js     # Rutas CRUD visual para users (usa Handlebars)
+¦  ¦  +- sessionRoutes.js       #
+¦  ¦  +- userRouter.js          # Rutas REST completo para usuarios
+¦  +- services
+¦  ¦  +- cartService.js  
+¦  ¦  +- ticketService.js
+¦  ¦  +- usersService.js 
+¦  +- utils/
+¦  ¦  +- passwJwt.js            # trata hash de passwords y JWT
+¦  +- views/                     
+¦     +- layouts/               # 
+¦     ¦  +- main.handlebars     # Vistas (Handlebars)
+¦     +- home.handlebars        # Home pag . Lista la totalidad de los productos
+¦     +- realTimeProducts.handlebars # Crear/Eliminar productos usando WebSocket
+¦                                    # Se actualiza en vivo en todos los clientes
+¦     +- altaProdCart.handlebars     # Detalle de un carrito luego del alta de un producto
+¦     +- crudUsers.handlebars
+¦     +- login.handlebars
+¦     +- profile.handlebars
+¦     +- recupero.handlebars
+¦     +- register.handlebars
+¦     +- detalleProducts.handlebars  # Vista en detalle de un producto
+¦     +- homePaginando.handlebars    # Home pag con paginación
+¦     +- verProdCart.handlebars      # Vista en detalle de un carrito 
+¦
++- .env                         # variables de entorno  (constantes)
++- .env_copy                    # copia del .env 
++- package.json    
++- package-lock.json    
++- README.md                    #
+
+
+```
+
+---
+
 ##  Endpoints de la API
 
 ### user (`/api/users`)
@@ -70,7 +145,7 @@
   - POST /crud/users        -crea un usuario -ingresar: email,password,first_name,last_name,age,role
   - PUT  /crud/users/:id    -Actualiza un usuario existente 
   - DELETE /crud/users/:id  -Elimina un usuario
-  
+
 ### (`/api/sessions`)
   - POST /api/sessions/login    -debe ingresarse email y password
   - POST /api/sessions/logout   
@@ -99,7 +174,6 @@
   - POST /api/carts/:cid/product/:pid - Agregar producto al carrito
   - DELETE /api/carts/:cid/product/:pid    Elimina un producto específico del carrito.
   - DELETE /api/carts/:cid    Eliminar ese carrito
-
 
 ---
 
