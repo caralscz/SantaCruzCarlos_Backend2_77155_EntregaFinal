@@ -59,14 +59,14 @@
 
 ### user (`/api/users`)
 
-  - GET  /api/users         -lista los usuarios
-  - GET  /api/users/:uid    -lista un usuario
+  - GET /api/users         -lista los usuarios
+  - GET /api/users/:uid    -lista un usuario
   - POST /api/users         -crea un usuario
   - PUT  api/users/:uid     -Actualizar un usuario
   - DELETE api/users/:uid   -elimina un usuario
 
-  - GET  /crud/users        (lista los usuarios (VIEW de handlebars), solo "admin" con formulario de "alta" y botones de "baja" y "modificacion" )
-  - POST /crud/users        -crea un usuario -ingresar: email,password,first_name,last_name,age,role -)
+  - GET  /crud/users        -lista los usuarios (VIEW de handlebars), solo "admin" con formulario de "alta" y botones de "baja" y "modificacion" 
+  - POST /crud/users        -crea un usuario -ingresar: email,password,first_name,last_name,age,role -
   - PUT  /crud/users/:id    -Actualiza un usuario existente 
   - DELETE /crud/users/:id  -Elimina un usuario
  
