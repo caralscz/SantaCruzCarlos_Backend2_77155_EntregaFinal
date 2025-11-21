@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<!--
+// -----------------------------------------------------------
+// src/public/menuPrue.html
+//
+// Pagina para probar los endpoints
+// -----------------------------------------------------------
+-->
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Scz Coder Shop - Prueba los endpoints</title>
+    <link rel="icon" type="image/png+xml" href="../../img/IcoCoderShop.png" />
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+
+<body>
+
+<!-- // esta es la línea luperior con botones comunes a todas las páginas -->
+<div class="lineaSupTit">
+    <a href="/" 
+        class="btn-treal">
+        🏠 Home
+    </a> 
+</div>
+<hr  class="lineaSupTit" >
+
+<!-- Linea del título -->
+<div class="tit-simple">
+    <h1>Coder Shop - Prueba de los endpoints </h1>
+</div>
+
+<hr  class="lineaSupTit" >
+
+    Server      :<A href='http://localhost:8080'>http://localhost:8080</A><br>
+    Home        :<A href='http://localhost:8080'>http://localhost:8080</A><br>
+    Real Time   :<A href='http://localhost:8080/realtimeproducts'>/realtimeproducts</A><br>
+    API Products:<A href='http://localhost:8080/api/products    '>/api/products    </A><br>
+    API Carts   :<A href='http://localhost:8080/api/carts       '>/api/carts       </A><br>
+
+<hr  class="lineaSupTit" >
+
+    <form action="http://localhost:8080/products" method="GET">
+    <input type="hidden" name="limit" value="5">
+    <input type="hidden" name="sort" value="code">
+    <input type="hidden" name="query" value="asc">
+    
+    <label for="page">page:</label>
+    <input type="text" id="page" name="page">    
+    <button type="submit" id="btnMensaje">Enviar</button>
+</form>
+
+
+    <div id="mensajes"></div>
+
+</body>
+</html>

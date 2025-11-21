@@ -1,0 +1,25 @@
+<!--
+// -----------------------------------------------------------
+// src/views/profile.handlebars
+// Muestra el profile completo del usuario autenticado 
+// -----------------------------------------------------------
+-->
+<!-- Linea del título -->
+<div class="tit-simple">
+    <h1>Coder Shop -Datos completos del usuario registrado</h1>
+</div>
+<hr  class="lineaSupTit" >
+<!--  ----------------------------------------------------------- -->
+
+<h4 class="muted-blue"> {{title}}</h4>
+
+<p>Nombre: {{user.first_name}} {{user.last_name}}</p>
+<p>Email: {{user.email}}</p>
+<p>ID: {{user.id}}</p>
+<p>Rol: {{user.role}}</p>
+<p>Edad: {{user.age}}</p>
+<p>Carrito: {{user.cart}}</p>
+<p>token {{token}}</p>
+
+
+{{!-- ¿Cómo implementariamos el cierre de sesión sabiendo que hay un endpoint para eso? --}}

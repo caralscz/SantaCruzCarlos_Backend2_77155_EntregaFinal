@@ -1,0 +1,136 @@
+<!-- 
+---------------------------------------------------------
+     src/views/crudUsers.handlebars
+     CRUD visual para usuarios
+---------------------------------------------------------- 
+-->
+
+<!-- Linea del título -->
+<div class="tit-simple">
+<h1>Gestión de Usuarios</h1>
+</div>
+
+<hr  class="lineaSupTit" >
+
+<!-- -------------------------------- -->  
+<!-- formulario de alta de un usuario -->
+<!-- -------------------------------- -->
+
+<h4 class="muted-blue">Crear/Eliminar usuarios de una lista.</h4>
+
+<h2>Crear un usuario</h2>
+{{!-- <form id="newUserForm" method="POST" action="/crud/users"> --}}
+<form id="createForm2" method="POST" action="/crud/users">
+  <fieldset>
+    <legend>Crear nuevo usuario</legend>
+    <label>Nombre:</label>
+    <input type="text" name="first_name" required />
+
+    <label>Apellido:</label>
+    <input type="text" name="last_name" required />
+
+    <label>Email:</label>
+    <input type="email" name="email" required />
+
+    <label>Edad:</label>
+    <input type="number" name="age" required />
+
+    <label>Password:</label>
+    <input type="password" name="password" required />
+
+    <label>Rol:</label>
+    <select name="role">
+      <option value="user" selected>user</option>
+      <option value="admin">admin</option>
+    </select>
+
+    <button type="submit" >Crear</button>
+  </fieldset>
+</form>
+
+<hr  class="lineaSupTit" >
+
+<!-- ======== LISTA DE USUARIOS EXISTENTES ======== -->
+<h2 style="margin-top:24px">Usuarios registrados</h2>
+
+<table border="1" cellpadding="6" id="tablaUsuarios">
+  <thead>
+    <tr>
+      <th>Nombre</th>
+      <th>Apellido</th>
+      <th>Email</th>
+      <th>Edad</th>
+      <th>Rol</th>
+      <th>Acciones</th>
+    </tr>
+  </thead>
+  <tbody>
+    {{#each users}}
+    <tr data-id="{{_id}}">
+      <td><input type="text" name="first_name" value="{{first_name}}" /></td>
+      <td><input type="text" name="last_name" value="{{last_name}}" /></td>
+      <td><input type="email" name="email" value="{{email}}" /></td>
+      <td><input type="number" name="age" value="{{age}}" /></td>
+      <td>
+        <select name="role">
+          <option value="user" {{#if (isEqual role 'user')}}selected{{/if}}>user</option>
+          <option value="admin" {{#if (isEqual role 'admin')}}selected{{/if}}>admin</option>
+        </select>
+      </td>
+      <td>
+        <button class="btn-update">Actualizar</button>
+        <button class="btn-delete">Borrar</button>
+      </td>
+    </tr>
+    {{/each}}
+  </tbody>
+</table>
+
+<script>
+// -----------------------------------------------------------
+// Script cliente para manejar PUT y DELETE desde el navegador
+// -----------------------------------------------------------
+document.addEventListener("DOMContentLoaded", () => {
+
+  // Borrar usuario
+  document.querySelectorAll(".btn-delete").forEach(btn => {
+    btn.addEventListener("click", async (e) => {
+      const id = e.target.closest("tr").dataset.id;
+      if (confirm("¿Seguro que desea eliminar este usuario?")) {
+        const resp = await fetch(`/crud/users/${id}`, { method: "DELETE" });
+        if (resp.ok) location.reload();
+        else alert("Error al eliminar usuario");
+      }
+    });
+  });
+
+  // Actualizar usuario
+  document.querySelectorAll(".btn-update").forEach(btn => {
+    btn.addEventListener("click", async (e) => {
+      const row = e.target.closest("tr");
+      const id = row.dataset.id;
+
+      const data = {
+        first_name: row.querySelector("[name=first_name]").value,
+        last_name: row.querySelector("[name=last_name]").value,
+        email: row.querySelector("[name=email]").value,
+        age: row.querySelector("[name=age]").value,
+        role: row.querySelector("[name=role]").value,
+      };
+
+      const resp = await fetch(`/crud/users/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data)
+      });
+
+      if (resp.ok) {
+        alert("Usuario actualizado correctamente");
+        location.reload();
+      } else {
+        alert("Error al actualizar usuario");
+      }
+    });
+  });
+});
+</script>

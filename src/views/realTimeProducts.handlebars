@@ -1,0 +1,221 @@
+<!--
+// -----------------------------------------------------------
+// src/views/realTimeProducts.handlebars
+// Crear/Eliminar productos usando WebSocket.
+// Se actualiza en vivo en todos los clientes.
+// -----------------------------------------------------------
+-->
+
+<!-- Linea del título -->
+<div class="tit-simple">
+<h1>Productos en tiempo real</h1>
+</div>
+
+<hr  class="lineaSupTit" >
+
+<!-- ------------------------------ --> 
+<!-- formulario de alta de producto -->
+<!-- ------------------------------ -->
+
+<h4 class="muted-blue">Crear/Eliminar productos usando WebSocket. La lista se sincroniza en vivo.</h4>
+
+{{!-- Solo mostrar formulario si es admin --}}
+{{#if user}}
+  {{#ifEquals user.role "admin"}}
+
+<h2>Crear producto</h2>
+<form id="createForm">
+  <input name="title" placeholder="Título" required />
+  <input name="description" placeholder="Descripción" required />
+  <input name="code" placeholder="Código (único)" required />
+  <input name="price" placeholder="Precio" type="number" required />
+  <input name="stock" placeholder="Stock" type="number" required />
+  <input name="category" placeholder="Categoría" required />
+  <input name="thumbnails" placeholder="Thumbs (URL de la imágen del producto)" />
+  <button type="submit">Crear</button>
+</form>
+
+{{else}}
+    <div class="alert alert-warning">
+      <strong>⚠️ Acceso restringido:</strong> Solo los administradores pueden crear productos.
+    </div>
+  {{/ifEquals}}
+{{else}}
+  <div class="alert alert-danger">
+    <strong>🔒 No autenticado:</strong> Debes <a href="/login">iniciar sesión</a> para interactuar con productos.
+  </div>
+{{/if}}
+
+<hr  class="lineaSupTit" >
+
+<!--  Lista de productos -->
+<h2 style="margin-top:24px">Listado</h2>
+<ul id="list"></ul>
+
+<script src="/socket.io/socket.io.js"></script>
+<script>
+  // Obtener token desde Handlebars
+  const serverToken = '{{token}}';       // **scz** 
+
+ // Obtener token de las cookies ... **scz** no trae nada pero lo dejo para analizar después
+  function getCookie(name) {
+    const match = document.cookie.match(new RegExp('(^| )' + name + '=([^;]+)'));
+    return match ? match[2] : null;
+  }
+
+  // Intentar primero desde servidor, luego desde cookies
+  const token = serverToken && serverToken !== '' ? serverToken : getCookie('authCookie');
+   
+  const $list = document.getElementById('list');
+  const $form = document.getElementById('createForm');
+
+  // Usuario actual del contexto Handlebars
+  const currentUser = {
+    {{#if user}}
+      role: '{{user.role}}',
+      isAdmin: '{{user.role}}' === 'admin',
+      email: '{{user.email}}',
+      isAuthenticated: true
+    {{else}}
+      role: null,
+      isAdmin: false,
+      email: null,
+      isAuthenticated: false
+    {{/if}}
+  };
+
+  // Puedo preguntar si está autenticado con: currentUser.isAuthenticated
+
+  // Conectar con autenticación
+  const socket = io({
+    auth: {
+      token: token  || undefined
+    }
+  });
+
+  function renderItem(p) {
+    const li = document.createElement('li');
+    li.id = 'prod-' + p._id;
+    li.className = 'row';
+    li.style.justifyContent = 'space-between';
+    li.style.gap = '12px';   
+
+    // ----------------------------------------------
+    //
+    // aquí armo la fila por cada producto 
+    //
+    // ----------------------------------------------
+    // Bloque izquierdo
+    const left = document.createElement('div');
+    left.innerHTML = `
+      <strong>${p.title}</strong>
+      <span class="muted">(${p.code})</span>
+      <span class="muted"> - $ ${p.price}</span>
+    `;   // Fin left 
+
+    // Bloque derecho
+    // class="btn-treal btn-1rem btn-separado" 
+    const right = document.createElement('div');
+    right.style.display = 'flex';
+    right.style.gap = '8px';
+
+    // Botón Ver detalle del producto + api/products/:id 
+    right.innerHTML = `
+    <button 
+        onclick="location.href='/${p._id}'" 
+        title="Ver: detalle del producto"> 
+        Detalle 
+      </button> 
+    
+    <button 
+        onclick="location.href='/api/products/${p._id}'" 
+        title="Ver: /api/products/${p._id}"> 
+        Ver api
+      </button> 
+    
+    `;
+    
+    // ----------------------------------------------
+    // botón "Eliminar" en la fila por cada producto 
+    // SOLO para admins
+    // ----------------------------------------------
+    if (currentUser.isAdmin) {
+        const del = document.createElement('button');
+        del.textContent = 'Eliminar';
+        del.title = `Eliminar este producto: ${p.title}`;
+        del.onclick = () => socket.emit('product:delete', p._id);
+        right.appendChild(del); 
+    } 
+    li.append(left, right);
+    return li;
+  }
+
+  function upsertProduct(p) {
+    const id = p._id || p.id; // por si llega id lógico
+    const existing = document.getElementById('prod-' + id);
+    if (existing) existing.remove();
+    $list.prepend(renderItem({ ...p, _id: id }));
+  }
+
+  function removeProduct(id) {
+    const el = document.getElementById('prod-' + id);
+    if (el) el.remove();
+  }
+
+
+  // Eventos de Socket.io
+  socket.on('connect', () => {
+    console.log('✅ Conectado al servidor WebSocket');
+    if (currentUser.isAuthenticated) {
+      console.log(`👤 Usuario: ${currentUser.email} (${currentUser.role})`);
+    }
+
+  });
+
+  // Manejo errores de conexión
+  socket.on('connect_error', (error) => {
+    console.error('❌ Error de conexión WebSocket:', error.message);
+    // Solo mostrar alerta si esperábamos estar autenticados
+    if (currentUser.isAuthenticated) {
+        alert('Error de autenticación. Por favor, inicia sesión nuevamente.');
+        setTimeout(() => {
+            window.location.href = '/login';
+          }, 2000);
+        }  
+  });
+
+  socket.on('products:init', (products) => {
+    $list.innerHTML = '';
+    products.forEach(upsertProduct);
+  });
+
+  socket.on('product:created',  (product) => {
+    upsertProduct(product);
+    // Mostrar notificación de éxito
+    alert(`✅ Producto "${product.title}" creado exitosamente`);
+  });
+
+  socket.on('product:deleted', removeProduct);
+  socket.on('error:message', (msg) => alert('❌ Error: ' + msg));
+
+  // ✅ Solo permitir submit si es admin
+  if ($form) {
+      $form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        if (!currentUser.isAdmin) {
+          alert('Solo los administradores pueden crear productos');
+          return;
+        }
+
+        const fd = new FormData($form);
+        const payload = Object.fromEntries(fd.entries());
+
+        if (payload.thumbnails) {
+          payload.thumbnails = payload.thumbnails.split(',').map(s => s.trim()).filter(Boolean);
+        }
+        socket.emit('product:create', payload);
+        $form.reset();
+      });
+  }
+</script>

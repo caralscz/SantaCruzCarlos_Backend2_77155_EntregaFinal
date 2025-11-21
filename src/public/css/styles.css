@@ -1,0 +1,231 @@
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto; margin: 20px; } 
+.grid { 
+  display: grid; 
+  gap: 16px; 
+  /* grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));  */
+  max-width: 50rem; /* Limita el ancho total del contenedor */
+  /* grid-template-columns: repeat(3, minmax(240px, 1fr));   */
+  grid-template-columns: repeat(3, 1fr);   /* 3 col que ocupan el espacio disponible */
+
+}
+.imgChica { max-width: 50px; display: block; margin: 0 auto 8px; }
+.card { border: 1px solid #ddd; border-radius: 12px; padding: 12px; }
+.card img { max-width: 100%; max-height: 180px; object-fit: contain; display: block; margin: 0 auto 8px; }
+.cardDiv {max-width: 12.5rem; }  /*  200px  */
+.row { display: flex; align-items: center; gap: 8px; } /*tambien lo uso en detalleProducts.handlebars */
+.muted { color: #555; font-size: .92rem; }
+.muted-blue { color: #1a1896; font-size: .92rem; font-family:"verdana";}
+.muted-red { color: #c40846; font-size: .92rem; font-family:"verdana"; font-style: italic;}
+
+/* Alertas */
+.alert {
+  padding: 15px;
+  margin: 15px 0;
+  border-radius: 5px;
+  font-weight: 500;
+}
+
+.alert-warning {
+  background-color: #fff3cd;
+  border: 1px solid #ffc107;
+  color: #856404;
+}
+
+.alert-danger {
+  background-color: #f8d7da;
+  border: 1px solid #dc3545;
+  color: #721c24;
+}
+
+.alert a {
+  color: inherit;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.pAlert{
+  color: #ff6b6b;
+    font-weight: bold;
+    animation: parpadear 2s infinite;
+    transition: opacity 0.3s ease;
+}
+
+.pAlert.hidden {
+    animation: none;
+    opacity: 0;
+}
+
+@keyframes parpadear {
+    0%, 50% { opacity: 1; }
+    51%, 100% { opacity: 0.3; }
+}
+
+button { cursor: pointer; }
+form input { width: 100%; margin: 6px 0; padding: 8px; }
+
+/* aquí van los estilos para la linea de cada producto listado en realTimeProducts */
+#list {
+    list-style: none;      /* sin viñetas */
+    padding: 0;
+    /*margin: 16px auto; */    /* centra horizontalmente */
+    width: 60%;            /* ocupa solo el 60% del ancho */
+  }
+
+#list li {
+    display: flex;
+    justify-content: space-between;
+    /*padding: 8px 12px;*/
+  }
+
+#list li:nth-child(odd) {  /* alterna colores gris claro*/
+  background-color: #f9f9f9;
+}
+
+#list li:nth-child(even) {  /* alterna colores blanco */
+  background-color: white;
+}
+
+/* estilo del formulario con el que inicia realTimeProducts  */
+ #createForm {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* dos columnas */
+    gap: 8px 12px; /* espacio entre filas y columnas */
+    max-width:  37.5rem;  /* 600px*/
+    margin-top: 1rem;   /* 16px */
+  }
+
+  #createForm input {
+    padding: 6px 8px; /* menos alto */
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+
+  #createForm button {
+    grid-column: span 2; /* botón ocupa toda la fila */
+    padding: 8px 12px;
+    font-size: 15px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  #createForm button:hover {
+    background: #0056b3;
+  }
+
+
+/* estilo del formulario con el que inicia crudUsers.handlebars  */
+ #createForm2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* dos columnas */
+    gap: 8px 12px; /* espacio entre filas y columnas */
+    max-width:  37.5rem;  /* 600px*/
+    margin-top: 1rem;   /* 16px */
+  }
+
+  #createForm2 input {
+    padding: 6px 8px; /* menos alto */
+    font-size: 14px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+    /* grid-column: span 2; /* botón ocupa toda la fila */
+    /*  */
+  #createForm2 button {
+    padding: 6px 16px;
+    font-size: 12px;
+    background: #b4b9be;
+    color: rgb(0, 0, 0);
+    border: .125rem;   /* 2px  */
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  #createForm2 button:hover {
+    background: #90a2b8;
+  }
+
+/*   Botón para la home pagina: home.handlebars */
+ .btn-treal {
+    background-color: #007bff; /*  orange; */
+    color: white;
+    border: none;
+    padding: 4px 8px;
+    font-size: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.2s ease;
+    height: 2rem;   /* alto fijo 32px*/
+    line-height: 2rem;   /* Centra el texto verticalmente */
+    padding: 0 8px;   /* Espaciado horizontal */
+  }
+
+  .btn-treal:hover {
+    background-color: #0868cf;  /*  darkorange;  *//* más oscuro al pasar el mouse */
+    transform: scale(1.1); /* se agranda un 10% */
+  }
+  
+/*   Botón para logout */
+ .btn-treal-logout {
+    background-color: #0400ff; /*  orange; */
+  }
+ 
+  .btn-1rem{
+    height: 1.5rem;   /* 24px alto fijo */
+    line-height: 1.5rem;   /* Centra el texto verticalmente */
+    padding: 0 6px;   /* Espaciado horizontal */
+  }
+
+  .btn-separado {
+  margin-left: 50px;
+  }
+
+  .btn-derecha {
+    width: 37.5rem;  /* 600px*/
+    text-align: right;
+  }
+  
+  /* Esto afecta a los <a> con class="btn-treal" */
+  a.btn-treal {
+  text-decoration: none;   /* sin subrayado */
+  font-weight: normal;     /* sin negrita */
+  font-style: normal;      /* sin cursiva */
+  display: inline-block;   /* se comporta como botón */
+  }
+
+ /** Linea en la parte superior de la pagina*/
+  .lineaSupTit{
+    display: flex;
+    align-items: center; /* centra verticalmente */
+    gap: 0.5rem; 
+
+    background-color: beige;
+    color: #1a1896; 
+    font-size: .75rem;  /*11px*/
+    font-family:"verdana";   
+    text-align:  left ;/**right;*/
+    font-style: italic;
+    font-weight: 900;
+    width: 50rem;  /* 800px  igual que .tit-simple*/  
+    margin: 0;  /** sin espacios alrededor */  
+    overflow-x: auto; 
+    white-space: nowrap;
+  } 
+
+  /**  titulo simple de dos elementos  */
+ .tit-simple{
+    display: flex; 
+    background-color: beige;
+    justify-content: space-between;   /*distribuye los elementos en los extremos*/
+    align-items: center;   /* centrar en el eje horizontal*/
+    width: 50rem;  /* 800px  igual que .lineaSupTit*/    
+ }
+
+ /** Para el form de ingreso de la paginación*/
+ .form-form{display: flex; align-items: center; gap: 0.5rem; background-color: #9e9999; height: 1.5rem;}
+ .form-input{ text-align: right; }
+ .form-input-n{ width: 2.5rem; text-align: right; height: .5625rem;}
+ .form-btn{background-color: #555; color: white;}

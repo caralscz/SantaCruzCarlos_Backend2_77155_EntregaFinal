@@ -1,0 +1,29 @@
+<!--
+// -----------------------------------------------------------
+// src/views/recupero.handlebars
+// Recuperamos la password de un usuario
+// -----------------------------------------------------------
+-->
+<!-- Linea del título -->
+<div class="tit-simple">
+    <h1>Coder Shop - Recuperar contraseña</h1>
+</div>
+</div>
+<hr  class="lineaSupTit" >
+<!--  ----------------------------------------------------------- -->
+
+<h4 class="muted-blue">Recuperar contraseña</h4>
+
+<form action="/api/sessions/recupero" method="post"  id="createForm">
+  <div>
+      <label for="email">Email:</label><br />
+      <input type="email" id="email" name="email" placeholder="MiCorreo@valido.com" required /><br />
+      
+      <label for="password">Nuevo Password:</label> <br />
+      <input type="password" id="password" name="password" placeholder="****" required /><br />
+
+    <button type="submit">Recuperar password</button>
+  </div>
+</form>
+
+<hr  class="lineaSupTit" >

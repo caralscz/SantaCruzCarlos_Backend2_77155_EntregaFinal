@@ -1,0 +1,168 @@
+<!--
+// -----------------------------------------------------------
+// src/views/homePaginando.handlebars
+// Home pag con paginación. 
+// -----------------------------------------------------------
+-->
+<!-- 
+    
+      Armamos el título
+   
+      Linea del título 
+   
+   -->
+<div class="tit-simple">
+<h1>Coder Shop - Productos pagina: {{page}}</h1>
+</div>
+<hr  class="lineaSupTit" >
+
+<!-- --------------------------------------- 
+   
+   Titulo de la grilla estática de productos   
+   
+  ---------------------------------------  -->
+<h4 class="muted-blue">Lista con paginacion, renderizada por HTTP    ( El nro. de carrito está pre-seleccionado ).</h4>
+
+<!-- Línea para los botones de la paginación          -->
+<!-- ------------------------------------------------ -->
+<div class="lineaSupTit">
+
+    <a href="/products?limit={{limit}}&page=1&sort={{sort}}&query={{query}}"
+      class="btn-treal" 
+      title="Ir a la página 1">
+      Pág. 1
+      </a>
+
+    {{#if hasPrevPage}}  <!-- Si hay una página anterior muestro el botón -->
+        <a href="/products?limit={{limit}}&page={{prevPage}}&sort={{sort}}&query={{query}}"
+          class="btn-treal" 
+          title="Ir a la página previa">
+          ⟪ Pág. anterior
+          </a>
+    {{/if}}
+
+    {{#if hasNextPage}}  <!-- Si hay una siguiente página muestro el botón -->
+        <a href="/products?limit={{limit}}&page={{nextPage}}&sort={{sort}}&query={{query}}"
+          class="btn-treal" 
+          title="Ir a la siguiente página">
+          Sig. pág. ⟫
+          </a>
+    {{/if}}
+
+    <a href="/products?limit={{limit}}&page={{totalPages}}&sort={{sort}}&query={{query}}"
+      class="btn-treal" 
+      title="Ir a la última página">
+      Ultima pág. ⟫⟫
+      </a>
+
+    <!-- formulario para posicionarse en una pagina determinada -->
+    <form action="./products" method="GET"   class="form-form">
+        <input type="hidden" name="limit" value="{{limit}}">
+        <input type="hidden" name="sort" value="{{sort}}">
+        <input type="hidden" name="query" value="{{query}}">    
+        <label for="page">&nbsp;Pagina⇨</label>
+        <input type="number" id="page" name="page"  required class="form-input-n">    
+        <button type="submit" class="btn-treal" title="Ir a la página ingresada">
+          Ir ⟫</button>
+    </form>
+</div> <!-- fin línea para los botones de la paginación -->
+<br><hr  class="lineaSupTit" >
+
+<!-- Formulario para ingresar "limit", "query" y "sort", de la paginación-->
+<!-- ------------------------------------------------------------------- -->
+<div class="lineaSupTit">
+
+<form action="/products" method="get"  class="form-form">
+  <input type="hidden" name="page" value="1"><!-- donde estamos es: {{page}} -->
+  
+  <!-- Ingreso de límite -->
+  <label for="limit">Cant. x pág:</label>
+  <input type="number" id="limit" name="limit" min="1"  value="{{limit}}" required class="form-input-n">
+  
+  <!-- Selector de qué clasificar. El isEqual es un Helper definido en index.js -->
+  <label for="query">Clasificar:</label>
+  <select id="query" name="query"  class="form-input">
+    <option value="code" {{#if (isEqual query "code") }} selected {{/if}} >
+    Code    
+    </option>
+    <option value="category" {{#if (isEqual query "category") }} selected {{/if}}>
+    Categoría               
+    </option>
+    <option value="price" {{#if (isEqual query "price") }} selected {{/if}}>
+    Precio               
+    </option>
+    <option value="stock" {{#if (isEqual query "stock") }} selected {{/if}}>
+    Stock              
+    </option>
+
+  </select>
+
+  <!-- Selector "sort" de ordenar asc/des. El isEqual es un Helper definido en index.js  -->
+  <label for="sort">Ordenar:</label>
+  <select id="sort" name="sort"  class="form-input" >
+    <option value="asc"  {{#if (isEqual sort "asc") }} selected {{/if}} >
+      Ascendente</option>
+    <option value="des"  {{#if (isEqual sort "des") }} selected {{/if}} >
+      Descendente</option>
+  </select>
+
+ <!-- Botón para aplicar -->
+  <button class="btn-treal form-btn" type="submit" title="Aplicar y cambia la cant. por pág.">
+    Aplicar
+    </button>
+</form>  <!-- Fin del formulario para ingresar "limit", "query" y "sort" -->
+
+</div>
+<hr  class="lineaSupTit" >
+
+<!-- --------------------------------  
+
+    Cuerpo de la página
+
+    Grilla estática de productos   
+    
+  --------------------------------  -->
+
+<div class="grid">
+  {{#each products}}
+    <div class="card">
+      {{#if thumbnails}}
+          {{!-- <!--  img src="{{lookup thumbnails 0}}" alt="{{title}}"   --> --}}
+          {{!-- <img src="{{thumbnails}}" alt="{{title}}" title="{{title}} onerror="this.onerror=null; this.src='./img/ImagenDefault.png';"> --}}
+          <img src="{{thumbnails}}" alt="{{title}}"  title="{{title}}">
+       {{else}}
+              <img src="../img/ImagenDefault.png" 
+              title="Proximamente se cargará una imagen del producto" 
+              alt="Proximamente se cargará una imagen del producto" >
+      {{/if}}
+      <h3>{{title}}</h3>
+      <div class="muted">{{description}}</div>
+      <div class="row">
+        <strong>$ {{price}}</strong>
+        <span class="muted">| Stock: {{stock}}</span>
+      </div>
+      <div class="muted">Código: {{code}} | Categoría: {{category}}</div>
+  
+       {{!-- Botón: Ir a Ver detalle de 1 (un) producto --}}
+       <button 
+        class="btn-treal" 
+        onclick="location.href='/{{_id}}'" 
+        title="Ver detalle del producto">
+        Ver detalle
+      </button>
+                
+      {{!-- Botón: Incorporar este producto a un carrito --}}
+      {{!-- <form action="./carts/68b39eb706b0e57306b2a7b3/product/{{_id}}" 
+            method="POST"  style="display:inline;">
+       <input type="hidden" name="quantity" value="1">
+        <button type="submit" class="btn-treal" title="Incorporar este producto a un carrito fijo">
+          Agregar al carrito
+        </button>
+      </form>  --}}
+
+    </div> {{!-- fin div class=card --}}
+
+  {{/each}}
+
+</div>
+

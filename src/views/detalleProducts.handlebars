@@ -1,0 +1,43 @@
+<!--
+// -----------------------------------------------------------
+// src/views/detalleProducts.handlebars
+// Vista en detalle de un producto. 
+// Paso previo a hacer el proceso de compras 
+// -----------------------------------------------------------
+-->
+
+<!-- Linea del título -->
+<div class="tit-simple">
+<h1>Coder Shop - Detalle de Producto</h1>
+</div>
+<hr  class="lineaSupTit" >
+<!-- -------------------------------- -->
+
+<!-- Muestra el detalle -->
+<p class="muted-blue">Detalle por HTTP (no tiempo real).</p>
+
+    <div class="card cardDiv">
+      {{#if product.thumbnails}}
+        <!--  img src="{{lookup product.thumbnails 0}}" alt="{{product.title}}" -->
+       {{!-- <img src="{{product.thumbnails}}" alt="{{product.title}}" onerror="this.onerror=null; this.src='./img/caja-de-regalo.jpg';"> --}}
+              <img src="{{product.thumbnails}}" alt="{{product.title}}"  title="{{product.title}}">
+       {{else}}
+              <img src="../img/ImagenDefault.png" 
+              title="Proximamente se cargará una imagen del producto" 
+              alt="Proximamente se cargará una imagen del producto" >
+        
+      {{/if}}
+      <h3>{{product.title}}</h3>
+      <div class="muted">{{product.description}}</div>
+      <div class="row">
+        <strong>$ {{product.price}}</strong>
+        <span class="muted">| Stock: {{product.stock}}</span>
+      </div>
+      <div class="muted">Código: {{product.code}} | Categoría: {{product.category}}</div>
+    
+    
+        {{!-- Botón: Incorporar este producto al carrito --}}
+
+    </div>
+
+   

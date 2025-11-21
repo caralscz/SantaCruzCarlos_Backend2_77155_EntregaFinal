@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<!--
+// -----------------------------------------------------------
+// src/views/layouts/main.handlebars
+//
+// Vistas (Handlebars)
+//
+// Los onclick="location.href='/crud/Users'" etc de los botones
+// deben estar definidos en routers/viewsRouter.js
+// -----------------------------------------------------------
+-->
+
+<head>
+  <meta charset="utf-8" />
+  <title>{{title}}</title>
+      <link rel="icon" type="image/png+xml" href="../../img/IcoCoderShop.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+
+{{!-- // esta es la línea luperior con botones comunes a todas las páginas --}}
+<div class="lineaSupTit">
+  {{!-- Ir al HOME --}}
+  <button 
+  class="btn-treal" 
+  onclick="location.href='/'" 
+  title="Ir a la Home">
+  🏠 Home
+</button>
+
+{{!-- CRUD usuarios  --}}
+<button 
+  class="btn-treal" 
+  onclick="location.href='/crud/Users'" 
+  title="CRUD usuarios">
+  CRUD Users
+</button>
+
+{{!-- Login Identificación  --}}
+<button 
+  class="btn-treal" 
+  onclick="location.href='/login'" 
+  title="Login / Identificación">
+  Login
+</button>
+
+{{!-- 
+      Muestra el nombre del usuario autenticado 
+      y el botón de salir de la sesión solo si está autenticado
+      class="btn btn-danger"
+--}}
+
+  {{#if user}}
+
+      <!-- Usuario autenticado --> 
+      <span>Hola, {{user.first_name}},  {{user.last_name}} </span>
+
+      {{!-- Logout / salir de la sesión  --}}
+      <form id="logoutForm" action="/api/sessions/logout" method="POST" style="display:inline;">
+        <button type="submit" class="btn-treal btn-treal-logout"  title="Logoff / salir de la sesión">🔒 Logout</button>
+      </form>
+  {{else}}
+      <!-- Usuario NO autenticado -->
+      <span>Usuario no autenticado ...</span>
+  {{/if}}
+
+</div>
+
+  <hr  class="lineaSupTit" >
+  {{{body}}}
+</body>
+</html>

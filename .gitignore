@@ -1,0 +1,18 @@
+# ============================================================== 
+# Estudiando Backend II | CoderHouse primer entrega | 01/09/2025
+# Desarrollado por Carlos A. santa Cruz
+# Programación Backend II: DISEÑO Y ARQUITECTURA BACKEND
+# Comisión 77155 - Del 23/sept/2025 al 11/nov/2025
+# Martes 19:00 a 21:00h
+# Profe: Daniel Riverol
+# Adjunto o Tutor: Andrés Rubio 
+# ============================================================== 
+# archivos y carpetas a ignorar por git (que no queremos subir al repositorio)
+# si el nombre finaliza con /, ignora la carpeta y todo su contenido
+# este es el contenedor de paginas que uso de apuntes
+.apuntes/
+src/pru.js
+.env
+# de aquí en adelante son los que se ignora por defecto lo que instalamos
+node_modules/
+node_modules
