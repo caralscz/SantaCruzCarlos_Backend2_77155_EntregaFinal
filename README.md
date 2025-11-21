@@ -57,23 +57,24 @@
 
 ##  Endpoints de la API
 
-### user
- - GET  /api/users         (lista los usuarios)
- - GET  /api/users/:uid    (lista un usuario)
- - POST /api/users         (crea un usuario) 
- - PUT  api/users/:uid     (Actualizar un usuario)
- - DELETE api/users/:uid   (elimina un usuario)
+### user (`/api/users`)
 
- - GET  /crud/users        (lista los usuarios (VIEW de handlebars), solo "admin" con formulario de "alta" y botones de "baja" y "modificacion" )
- - POST /crud/users        (crea un usuario -ingresar: email,password,first_name,last_name,age,role -)
- - PUT  /crud/users/:id    (Actualiza un usuario existente -puede ingresar: email,first_name,last_name,age,role -)
- - DELETE /crud/users/:id  (Elimina un usuario)
+  - GET  /api/users         (lista los usuarios)
+  - GET  /api/users/:uid    (lista un usuario)
+  - POST /api/users         (crea un usuario) 
+  - PUT  api/users/:uid     (Actualizar un usuario)
+  - DELETE api/users/:uid   (elimina un usuario)
+
+  - GET  /crud/users        (lista los usuarios (VIEW de handlebars), solo "admin" con formulario de "alta" y botones de "baja" y "modificacion" )
+  - POST /crud/users        (crea un usuario -ingresar: email,password,first_name,last_name,age,role -)
+  - PUT  /crud/users/:id    (Actualiza un usuario existente -puede ingresar: email,first_name,last_name,age,role -)
+  - DELETE /crud/users/:id  (Elimina un usuario)
  
- - POST /api/sessions/login    (debe ingresarse email y password))
- - POST /api/sessions/logout   
- - GET  /api/sessions/current  (muestra todos los atributos del usuario autenticado)
- - POST /api/sessions/recupero  (recupera la password)
- - POST /api/sessions/register  (crear usuario)
+  - POST /api/sessions/login    (debe ingresarse email y password))
+  - POST /api/sessions/logout   
+  - GET  /api/sessions/current  (muestra todos los atributos del usuario autenticado)
+  - POST /api/sessions/recupero  (recupera la password)
+  - POST /api/sessions/register  (crear usuario)
 
 ### Productos (`/api/products`)
 
