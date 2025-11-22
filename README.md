@@ -177,7 +177,7 @@ Comision77155entregaFinal/
 
 ---
 
-### Librerias utilizadas  ??
+### Librerias utilizadas  📦 📚
 
 - [Express](https://expressjs.com/): Express es un marco de aplicación web Node.js que proporciona un conjunto de características para aplicaciones web y móviles.
 - [Express.handlebars](https://handlebarsjs.com/) Motor de plantillas para Express.js que permite generar HTML dinámico.

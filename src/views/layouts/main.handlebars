@@ -56,7 +56,7 @@
   {{#if user}}
 
       <!-- Usuario autenticado --> 
-      <span>Hola, {{user.first_name}},  {{user.last_name}} </span>
+      <span>Hola, {{user.first_name}},  {{user.last_name}}</span>
 
       {{!-- Logout / salir de la sesión  --}}
       <form id="logoutForm" action="/api/sessions/logout" method="POST" style="display:inline;">

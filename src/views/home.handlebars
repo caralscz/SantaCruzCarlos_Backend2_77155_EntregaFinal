@@ -27,41 +27,20 @@
 </button>
 
 </p>
-<h4 class="muted-blue">Seleccionar un carrito</h4>
-
 <hr  class="lineaSupTit" >
-
-<!--  form para seleccionar un carrito  -->
-<form action="#" method="GET" class="form-form">
-  <label for="cartsIdSelecc">Carrito:</label>
-  <select name="cartsIdSelecc" id="cartsIdSelecc" required>
-    <option > --seleccione un carrito--</option>
-    {{#each cartIds}}
-      <option value="{{this}}">{{this}}</option>
-    {{/each}}
-  </select>
-  
-  <!-- Botón adicional para ver productos del carrito -->
-<button type="button" id="verCarritoBtn" class="btn-treal">
-  Ver carrito seleccionado
-</button>
-
-
-  <!-- boton p/selecc un carrito  -->
-  <button class="btn-treal">   {{!-- type="submit" --}}
-    Usar carrito
-  </button>
-  <p class="pAlert" id="alertMessage"> ⇐ Debe seleccionar uno si desea agregar al carrito</p>
-  
-</form>
 
 <!-- -------------------------------- -->
-
-<hr  class="lineaSupTit" >
-
-<!--   Grilla estática de productos   -->
 <h4 class="muted-blue">Lista de todos los productos, renderizada por HTTP (no tiempo real).</h4>
 
+<!-- Botón para ver los productos del carrito -->
+  <button 
+      class="btn-treal" 
+      onclick="location.href='/carts/{{user.cart}}'" 
+      title="Ver carrito">
+      Ver carrito existente
+  </button>
+
+<!--   Grilla estática de productos   -->
 <div class="grid">
   {{#each products}}
     <div class="card">
@@ -90,12 +69,13 @@
 
         {{!-- Botón: Incorporar este producto al carrito --}}
         <form class="formAgregarCarrito" 
-              action="./carts/REEMPLAZAR_CART_ID/product/{{_id}}"  
+              {{!-- action="./carts/REEMPLAZAR_CART_ID/product/{{_id}}"   --}}
+              action="./carts/{{../user.cart}}/product/{{_id}}"  
               method="POST" style="display:inline;"
               >
           <input type="hidden" name="quantity" value="1">
-          <button type="submit" class="btn-treal" title="Si seleccionó un carrito, incorpora este producto"
-          disabled>   {{!-- // este botón queda disabled hasta que elija un carrito que lo habilita --}}
+          <button type="submit" class="btn-treal" title="Si seleccionó un carrito, incorpora este producto">
+            {{!-- disabled> // este botón queda disabled hasta que elija un carrito que lo habilita --}}
             Agregar al carrito
           </button>
         </form>
@@ -105,90 +85,3 @@
 
 </div>
 
-
-<!-- --------------------------------  
-
-    En este script 
-      0) Leo en la URL si la persona seleccionó un nro de carrito o 
-         si simplemente seleccionó un carrito
-      1) ubico todos los form "Agregar al carrito" de cada producto
-      2) modifico el link del 'action' del form, con el Nro del carrito seleccionado
-      3) hago 'enabled' el botón submit
-    
-  --------------------------------  -->
-  <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const selectCarrito = document.getElementById("cartsIdSelecc");
-    const verCarritoBtn = document.getElementById("verCarritoBtn");  // botón p/ver carritos
-    const alertMessage = document.getElementById("alertMessage");   // mensaje de alerta
-    
-    // Función para actualizar formularios
-    function updateCartForms(cartId) {
-        const forms = document.querySelectorAll(".formAgregarCarrito");
-        const buttons = document.querySelectorAll(".formAgregarCarrito button[type='submit']");
-        
-        // console.log(`Actualizando ${forms.length} formularios con carrito: ${cartId}`);
-        
-        if (cartId && cartId !== "") {
-            // Actualizar actions de los formularios
-            forms.forEach((form, index) => {
-                form.action = form.action.replace("REEMPLAZAR_CART_ID", cartId);
-                // console.log(`Form ${index + 1}: ${form.action}`);
-            });
-            
-            // Habilitar botones
-            buttons.forEach(button => {
-                button.disabled = false;
-                button.title = `Agregar producto al carrito ${cartId}`;
-            });
-            
-            // Ocultar mensaje de alerta
-            if (alertMessage) {
-                alertMessage.classList.add("hidden");
-            }
-            
-        } else {
-            // Deshabilitar botones
-            buttons.forEach(button => {
-                button.disabled = true;
-                button.title = "Selecciona un carrito primero";
-            });
-            
-            // Mostrar mensaje de alerta
-            if (alertMessage) {
-                alertMessage.classList.remove("hidden");
-            }
-        }
-    }
-    
-    // Event listener para cambios en el select
-    selectCarrito.addEventListener("change", (e) => {
-        const selectedCart = e.target.value;
-        updateCartForms(selectedCart);
-    });
-    
-    // Verificar si hay un carrito en la URL al cargar
-    const urlParams = new URLSearchParams(window.location.search);
-    const cartFromUrl = urlParams.get("cartsIdSelecc");
-    
-    if (cartFromUrl) {
-        selectCarrito.value = cartFromUrl;
-        updateCartForms(cartFromUrl);
-    } else {
-        updateCartForms(""); // Inicializar en estado deshabilitado
-    }
-
-    // Botón "Ver carrito seleccionado"
-    verCarritoBtn.addEventListener("click", () => {
-        const selectedCart = selectCarrito.value;
-        if (!selectedCart) {
-            alert("Debes seleccionar un carrito primero.");
-            return;
-        }
-        // Redirige a tu endpoint GET /carts/:cid
-        window.location.href = `/carts/${selectedCart}`;
-    });
-
-});
-</script>
-<!--script anterior ver en carpeta .apuntes -->

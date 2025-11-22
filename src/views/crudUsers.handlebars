@@ -61,6 +61,7 @@
       <th>Email</th>
       <th>Edad</th>
       <th>Rol</th>
+      <th>Carrito</th>
       <th>Acciones</th>
     </tr>
   </thead>
@@ -76,7 +77,9 @@
           <option value="user" {{#if (isEqual role 'user')}}selected{{/if}}>user</option>
           <option value="admin" {{#if (isEqual role 'admin')}}selected{{/if}}>admin</option>
         </select>
-      </td>
+      </td>      
+      <td><input type="text" name="cart" value="{{cart}}" /></td>
+
       <td>
         <button class="btn-update">Actualizar</button>
         <button class="btn-delete">Borrar</button>
@@ -116,6 +119,7 @@ document.addEventListener("DOMContentLoaded", () => {
         email: row.querySelector("[name=email]").value,
         age: row.querySelector("[name=age]").value,
         role: row.querySelector("[name=role]").value,
+        cart: row.querySelector("[name=cart]").value,
       };
 
       const resp = await fetch(`/crud/users/${id}`, {

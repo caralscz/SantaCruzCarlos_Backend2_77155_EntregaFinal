@@ -1,4 +1,4 @@
-//
+
 // -----------------------------------------------------------
 // src/config/passportConfig.js
 // -----------------------------------------------------------
@@ -6,6 +6,7 @@
 const passport = require("passport");
 const local = require("passport-local");
 const userModel = require("../dao/models/userModel.js");
+const cartsDao  = require("../dao/cartsDao.js");
 const { createHash } = require("../utils/passwJwt.js");
 const jwt = require("passport-jwt");
 const envs = require( "../config/envs.js");    // variables de entorno
@@ -38,23 +39,36 @@ const initializePassport = () => {
         usernameField: "email",
       },
       async (req, username, password, done) => {
-        const { first_name, last_name, email } = req.body;
+        const { first_name, last_name, email, age, role } = req.body;
         try {
+          // Verificar si el usuario ya existe
           const userFound = await userModel.findOne({ email: username });
           if (userFound) {
             console.log("Usuario existente en la db");
             return done(null, false);   // null : no hay error, false: no hay mensaje para mostrar 
           }
+
+          // CREAR CARRITO VACÍO
+          const newCart = await cartsDao.createEmptyCart();
+          // console.log('🛒 Carrito vacío creado:', newCart._id);
+
+          // CREAR USUARIO CON CARRITO ASIGNADO          
           const newUser = {
             first_name,
             last_name,
             email,
+            age: age || 18,
+            role: role || 'user',
             password: createHash(password),
+            cart: newCart._id    // ASIGNAMOS CARRITO
           };
           const user = await userModel.create(newUser);
+          // console.log('Usuario creado con Passport:', user.email, 'Carrito:', user.cart);
+
           return done(null, user);       // null : no hay error, user: en el mensaje para mostrar 
         } catch (error) {
-          return done(`Error al crear el usuario ${error}`, false);    // hay error, false: no hay mensaje para mostrar 
+          console.error('❌ Error al crear usuario con Passport:', error);
+          return done(`Error al crear el usuario ${error.message}`, false);    // hay error, false: no hay mensaje para mostrar 
         }
       }
     )

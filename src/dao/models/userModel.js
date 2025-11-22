@@ -13,15 +13,8 @@ const userSchema = new mongoose.Schema({
     age: {type: Number,required: true    },
     password: {type: String,required: true,max: 100    },
     role: {type: String,enum: ['user', 'admin'],default: 'user'     },
-    cart:{type: String,default: '68feed60a1dc6c7b297ed569'    }
+    cart:{type: mongoose.Schema.Types.ObjectId,ref: 'carts',required: true  }
 });
-
-// 'users' es el nombre de la collection
-    // cart:{
-    //     type: mongoose.Schema.Types.ObjectId,
-    //     ref: 'carts',
-    //     required: true
-    // }
 
 const userModel = mongoose.model(userCollection, userSchema);
 module.exports = userModel;

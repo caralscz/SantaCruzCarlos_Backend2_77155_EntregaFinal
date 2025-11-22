@@ -5,6 +5,7 @@
 // --------------------------------------------------------------------
 
 const userDao = require("../dao/userDao.js");
+const cartsDao = require("../dao/cartsDao.js"); 
 const { createHash , isValidadPassword } = require("../utils/passwJwt.js");
 
 class usersService {
@@ -14,12 +15,30 @@ class usersService {
   }
 
   async createUser(data) {   
-    const exists = await userDao.getByEmail(data.email);
-    if (exists) return { error: "El correo ya existe" };
+    
+    try {
+        // Verificar si el usuario ya existe
+        const exists = await userDao.getByEmail(data.email);
+        if (exists) return { error: "El correo ya existe" };
 
-    data.password = createHash(data.password);
-    const newUser = await userDao.createUser(data);
-    return { user: newUser };     // **scz** es como hacer return await userDao.createUser(data);
+        // CREAR CARRITO VACÍO PRIMERO
+          const newCart = await cartsDao.createEmptyCart();
+          // console.log('Carrito vacío creado:', newCart._id);
+
+        // HASHEAR PASSWORD
+          data.password = createHash(data.password);
+
+        // ASIGNAR EL ID DEL CARRITO AL USUARIO
+          data.cart = newCart._id;
+
+        // CREAR USUARIO CON EL CARRITO ASIGNADO
+        const newUser = await userDao.createUser(data);
+        // console.log('Usuario creado:', newUser.email, 'con carrito:', newUser.cart);
+        return { user: newUser };     // **scz** es como hacer return await userDao.createUser(data);
+    } catch (error) {
+      console.error('❌ Error en createUser:', error);
+      return { error: "Error al crear el usuario: " + error.message };
+    }
   }
 
   async updateUser(id, data) {
@@ -27,12 +46,26 @@ class usersService {
   }
 
   async deleteUser(id) {
-    return await userDao.delete(id);
-  }
+    try {
+      // Eliminar también el carrito asociado
+      const user = await userDao.getById(id);
+      if (user && user.cart) {
+        await cartsDao.deleteCart(user.cart);
+        // console.log('Carrito eliminado:', user.cart);
+      }
+      const deletedUser = await userDao.delete(id);
+      // console.log(' Usuario eliminado:', deletedUser.email);
+      return deletedUser;
+
+    } catch (error) {
+      console.error('❌ Error al eliminar usuario:', error);
+      throw error;
+    }
+    }
 
    async loginUser(email, password) {
     const user = await userDao.getByEmail(email);
-    if (!user) return { error: "Usuario no encontrado" };
+    if (!user) return { error: "Credenciales inválidas" };  /* Usuario no encontrado */
 
     const valid = isValidadPassword(password, user.password);
     if (!valid) return { error: "Credenciales inválidas" };

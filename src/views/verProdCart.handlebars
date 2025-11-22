@@ -11,7 +11,7 @@
 <hr  class="lineaSupTit" >
 <!--  ----------------------------------------------------------- -->
 
-<h4 class="muted-blue">Seleccionar un carrito</h4>
+<h4 class="muted-blue">Seleccionar otro carrito</h4>
 
 <form id="formSeleccionarCarrito" class="form-form">
   <label for="cartsIdSelecc">Carrito:</label>
@@ -23,7 +23,7 @@
       </option>
     {{/each}}
   </select>
-  <button type="submit" class="btn-treal">Mostrar carrito</button>
+  <button type="submit" class="btn-treal">⇐ Mostrar este carrito</button>
 </form>
 
 <hr  class="lineaSupTit" >
@@ -69,7 +69,7 @@
       <form id="deleteForm-{{this.product._id}}" style="display:inline;">
           <button type="button" 
           class="btn-treal" 
-          onclick="eliminarProd('{{../carts._id}}','{{this.product._id}}')"
+          onclick="eliminarProd('{{../carts._id}}','{{this.product._id}}','{{this.product.title}}'')"
            title="Borrar este producto del carrito ">
     Eliminar 
   </button>
@@ -102,13 +102,13 @@
     });
   
   // para ir a eleminar un producto del carrito
-  function eliminarProd(cartId, productId) {
+  function eliminarProd(cartId, productId, productTitle) {
     
     fetch(`/carts/${cartId}/product/${productId}`, {
       method: 'DELETE'
     })
     .then(res => {
-      alert(`002 redirijo desde aquí `);
+      alert(`Producto ${productTitle} : eliminado.`);
       if (!res.ok) throw new Error("Error eliminando producto");
          // Redirigimos la pagina
          window.location.href = `/carts/${cartId}`;

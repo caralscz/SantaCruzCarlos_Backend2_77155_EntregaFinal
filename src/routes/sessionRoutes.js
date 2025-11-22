@@ -56,7 +56,8 @@ router.post("/login", async (req, res) => {
       email: user.email,
       role: user.role,
       first_name: user.first_name,
-      last_name: user.last_name
+      last_name: user.last_name,
+      cart:user.cart
     });
 
     // Enviar cookie segura

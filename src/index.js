@@ -175,10 +175,10 @@ io.on('connection', async (socket) => {
     console.log(` Home      :   http://localhost:${envs.port}/`);
     console.log(` CRUD Users:   http://localhost:${envs.port}/crud/Users`);
     console.log(' ');
-    console.log(` Real Time :   http://localhost:${envs.port}/realtimeproducts`);
-    console.log(` Paginación:   http://localhost:${envs.port}/products?page=1&limit=10`);
     console.log(` API Products: http://localhost:${envs.port}/api/products`);
     console.log(` API Carts :   http://localhost:${envs.port}/api/carts`);
     console.log(` API Users :   http://localhost:${envs.port}/api/users`);
+    console.log(` Paginación:   http://localhost:${envs.port}/products?page=1&limit=10`);
+    console.log(` Real Time :   http://localhost:${envs.port}/realtimeproducts`);
   });
 })();
