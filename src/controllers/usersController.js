@@ -11,7 +11,7 @@ class UsersController {
   async renderCrudPage(req, res) {
     try {
       const users = await usersService.getAllUsers();
-      res.render("crudUsers", { title: "CRUD Usuarios", users });
+      res.render("crudUsers", { title: "CRUD Usuarios.", users });
     } catch (err) {
       res.status(500).send(`Error al obtener usuarios: ${err.message}`);
     }

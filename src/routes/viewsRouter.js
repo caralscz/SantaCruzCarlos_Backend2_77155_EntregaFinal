@@ -47,17 +47,19 @@ router.get('/logout', async (req, res) => {
   }
 });
 
-// -----------------------------------------------------------
-// Users CRUD
-// ----------------------------------------------------------- 
+// // -----------------------------------------------------------
+// // Users CRUD
+// // ----------------------------------------------------------- 
 
-router.get('/crud/Users', async (req, res) => {
-  try {
-    res.render('crudUsers', { title: 'CRUD Usuarios' });
-  } catch (e) {
-    res.status(500).send('Error interno get crudUsers');
-  }
-});
+// router.get('/crud/Users', async (req, res) => {
+//   try {
+//           // const users = await usersService.getAllUsers();
+    
+//     res.render('crudUsers', { title: 'CRUD Usuarios-' });
+//   } catch (e) {
+//     res.status(500).send('Error interno get crudUsers');
+//   }
+// });
 
 // -----------------------------------------------------------  
 // Home: renderiza lista estática (HTTP)

@@ -8,6 +8,9 @@ const express = require('express');
 const userModel = require('../dao/models/userModel');
 const router = express.Router();
 const { createHash } =require( "../utils/passwJwt.js");
+const userDao = require("../dao/userDao.js");
+const cartsDao = require("../dao/cartsDao.js"); 
+
 
 // Endpoints
 // -----------------------------------
@@ -61,8 +64,17 @@ router.post('/', async (req, res) => {
     
     let {last_name,first_name, age, email,password} = req.body;
     try {
+        // Verificar si el usuario ya existe
+        const exists = await userDao.getByEmail(email);
+        if (exists) return { error: "El correo ya existe" };
+
+        // CREAR CARRITO VACÍO PRIMERO
+        const cart = await cartsDao.createEmptyCart();
+        // console.log('Carrito vacío creado:', cart._id);
+
         password = createHash(password);
-        const result = await userModel.create({last_name,first_name, age, email,password});
+
+        const result = await userModel.create({first_name,last_name,email, age, password,cart});
         res.send({
             status: 201, 
             message: 'success',
@@ -81,7 +93,7 @@ router.post('/', async (req, res) => {
 // -----------------------------------
 router.put('/:uid', async (req, res) => {
     const uid = req.params.uid;
-    const {last_name,first_name, age, email} = req.body;
+    const {last_name,first_name, age, email,role} = req.body;
     try {
         const user = await userModel.findOne({_id: uid});
         if (!user) throw new Error('User not found');
@@ -90,6 +102,7 @@ router.put('/:uid', async (req, res) => {
             last_name: last_name ?? user.last_name,
             first_name: first_name ?? user.first_name,
             age: age ?? user.age,
+            role: role ?? user.role,
             email: email ?? user.email
         }
 

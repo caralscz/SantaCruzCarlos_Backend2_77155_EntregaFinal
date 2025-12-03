@@ -69,7 +69,7 @@
       <form id="deleteForm-{{this.product._id}}" style="display:inline;">
           <button type="button" 
           class="btn-treal" 
-          onclick="eliminarProd('{{../carts._id}}','{{this.product._id}}','{{this.product.title}}'')"
+          onclick="eliminarProd('{{../carts._id}}','{{this.product._id}}','{{this.product.title}}')"
            title="Borrar este producto del carrito ">
     Eliminar 
   </button>
@@ -108,7 +108,7 @@
       method: 'DELETE'
     })
     .then(res => {
-      alert(`Producto ${productTitle} : eliminado.`);
+      alert(`Producto ${productTitle} : eliminado. verProdCart`);
       if (!res.ok) throw new Error("Error eliminando producto");
          // Redirigimos la pagina
          window.location.href = `/carts/${cartId}`;

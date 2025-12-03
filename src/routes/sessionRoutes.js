@@ -5,12 +5,11 @@
 const { Router } =require( "express");
 const { createHash, isValidadPassword } =require( "../utils/passwJwt.js");
 const userModel = require("../dao/models/userModel.js");
-const passport = require("passport");
-const userService = require("../services/usersService.js");
+const usersService = require("../services/usersService.js");
 const { generateToken, verifyToken } = require("../utils/passwJwt.js");
 const UserDTO = require("../dto/UserDTO.js");
 const auth = require("../middlewares/auth.js");
-const { adminOnly } = require("../middlewares/roles.js");
+const { adminOrUser } = require("../middlewares/roles.js");
 
 const router = Router();
 // Notas: también debo definir las rutas en index.js (generico) y en viewsRouter.js (vistas)
@@ -19,7 +18,7 @@ const router = Router();
 // ----------------------------------------------------------- 
 router.post("/register", async (req, res) => {
   try {
-    const result = await userService.createUser(req.body);
+    const result = await usersService.createUser(req.body);
 
     if (result.error) {
       return res.status(400).json({ status: "error", message: result.error });
@@ -43,7 +42,7 @@ router.post("/login", async (req, res) => {
   try {
     const { email, password } = req.body;
 
-    const result = await userService.loginUser(email, password);
+    const result = await usersService.loginUser(email, password);
     if (result.error) {
       return res.status(401).json({ status: "error", message: result.error });
     }
@@ -81,7 +80,7 @@ router.post("/login", async (req, res) => {
 // GET /api/session/current
 // Devuelve solo DTO del usuario actual
 // ----------------------------------------------------------- 
-router.get("/current", auth, adminOnly, async (req, res) => {
+router.get("/current", auth, adminOrUser, async (req, res) => {
   const token = req.cookies.authCookie;
 
   if (!token) {
@@ -93,7 +92,7 @@ router.get("/current", auth, adminOnly, async (req, res) => {
     return res.status(401).json({ status: "error", message: "Token inválido" });
   }
 
-  const user = await userService.getCurrentUser(decoded.user.id);
+  const user = await usersService.getCurrentUser(decoded.user.id);
 
   // Generar DTO
   const dto = new UserDTO(user);
@@ -109,14 +108,18 @@ router.get("/current", auth, adminOnly, async (req, res) => {
 // recupero de pass  (update de la password)
 // -----------------------------------------------------------
 router.post("/recupero", async (req, res) => {
-  const { email, password } = req.body;
   try {
-    // validamos si recibimos todos los campos
+    const { email, password } = req.body;
+
+    // validamos si está el usuario y recibimos todos los campos
     const userFound = await userModel.findOne({ email });
 
     if (!userFound) {
       return res.status(401).json({ message: "El usuario NO existe."});
     }
+
+    const valid = isValidadPassword(password, userFound.password);
+    if (valid) return res.status(401).json({ message: "Debe colocar una password diferente de la anterior"});
 
     const password_hash = createHash(password);
     userFound.password = password_hash;

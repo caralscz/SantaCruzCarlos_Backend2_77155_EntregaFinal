@@ -10,7 +10,7 @@
 
 module.exports = {
   // # usado en index.js cuando hacemos el listen del servidor
-  port: process.env.PORT || 8080,   // Escuchar en 8080
+  port: process.env.PORT || 8080,   // default: escuchar en 8080
 
   // # usado en index.js 
   mongo_db: process.env.MONGO_DB || "mongodb+srv://sczcaral_dbCoder:coderdb01@cluster0.7yscrme.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0",

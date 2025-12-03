@@ -9,7 +9,10 @@ const cartController = require("../controllers/cartController");
 const auth = require("../middlewares/auth.js");
 
 // Compra carrito → genera ticket
-router.post("/:cid/purchase", auth, cartController.purchase);
+// POST /api/carts/:cid/purchase
+// router.post("/:cid/purchase", auth, cartController.purchase);
+router.post('/:cid/purchase', auth, cartController.purchase.bind(cartController));
+
 
 // Ver ticket
 router.get("/tickets/:tid", auth, cartController.getTicketById);

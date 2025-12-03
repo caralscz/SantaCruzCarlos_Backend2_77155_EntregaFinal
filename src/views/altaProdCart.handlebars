@@ -59,7 +59,7 @@
       <form id="deleteForm-{{this.product._id}}" style="display:inline;">
           <button type="button" 
           class="btn-treal" 
-          onclick="eliminarProd('{{../cart._id}}','{{this.product._id}}')"
+          onclick="eliminarProd('{{../cart._id}}','{{this.product._id}}','{{this.product.title}}')"
            title="Borrar este producto del carrito ">
     Eliminar 
   </button>
@@ -74,13 +74,13 @@
 <hr  class="lineaSupTit" >
 
 <script>
-  function eliminarProd(cartId, productId) {
-    
+  function eliminarProd(cartId, productId,title) {
+
     fetch(`/carts/${cartId}/product/${productId}`, {
       method: 'DELETE'
     })
     .then(res => {
-      alert(`001 redirijo desde aquí `);
+      alert(`${title}: eliminado correctamente. altaProdCart`);
        if (!res.ok) throw new Error("Error eliminando producto");
          // Redirigimos la pagina
          window.location.href = `/carts/${cartId}`;
@@ -89,6 +89,7 @@
   }
 
  async function crearTicket(cartId) {
+
     try {
       // Leemos el email del usuario desde una variable en la vista (res.locals.user.email)
       // Para seguridad y simplicidad, inyecta el email en la vista desde 
@@ -97,6 +98,7 @@
 
       // Si no hay email, pedimos al servidor que lo tome de la cookie/JWT (en backend).
       const body = purchaserEmail ? { purchaser: purchaserEmail } : {};
+
 
       const res = await fetch(`/api/carts/${cartId}/purchase`, {
         method: 'POST',
@@ -107,7 +109,7 @@
       const data = await res.json();
 
       if (!res.ok) {
-        alert(`Error: ${data.error || JSON.stringify(data)}`);
+        alert(`Error apc.h: ${data.error || JSON.stringify(data)}`);
         return;
       }
 

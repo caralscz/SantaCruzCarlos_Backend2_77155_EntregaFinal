@@ -4,7 +4,6 @@
 // Con .lean(), Mongoose devuelve un objeto plano de JavaScript, sin la sobrecarga de los métodos de Mongoose
 // -----------------------------------------------------------
 
-// const { ProductModel } = require('./models/productsModel'); 
 const  ProductModel  = require('./models/productsModel'); 
 
 class ProductsManager {

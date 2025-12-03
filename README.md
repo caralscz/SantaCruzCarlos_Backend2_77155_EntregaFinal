@@ -28,7 +28,7 @@
       email: String (debe ser único)      
       age: Number      
       password: String (en formato hash)      
-      cart: Id con referencia a Carts      
+      cart: Id con referencia a Carts   (se crea un cart nuevo para cada usuario nuevo)   
       role: String (valor por defecto: 'user')
 
 - Encriptación de Contraseña:
@@ -59,72 +59,94 @@
 
 ```
 Comision77155entregaFinal/
-+- src/ 
-¦  +- app.js                    # main: Servidor principal
-¦  +- config/                   # archivos de configuración
-¦  ¦  +- envs.js                # aquí definimos variables de entorno
-¦  ¦  +- db.js                  # Conexión a Mongo usando Mongoose
-¦  ¦  +- passportConfig.js      # Passport , Estrategia JWT, Serialización de usuario
-¦  +- dao/                       
-¦  ¦  +- productsManager.js     # Clases estáticas con métodos CRUD. Plantilla
-¦  ¦  ¦                         #     u “objeto constructor” de "products"
-¦  ¦  +- cartsManager.js        # idem para "carts"
-¦  ¦  +- ticketDAO.js         
-¦  ¦  +- ticketManager.js     
-¦  ¦  +- userDao.js           
-¦  ¦  +- models/                # 
-¦  ¦     +- productsModel.js    # productSchema
-¦  ¦     +- cartsModel.js       # cartProductSchema
-¦  ¦     +- ticketModel.js
-¦  ¦     +- userModel.js        # userCollection, esquema de Usuarios
-¦  +- dto/
-¦  ¦     +- UserDTO.js
-¦  +- middlewares
-¦  ¦     +-auth.js 
-¦  ¦     +-roles.js
-¦  +- controllers
-¦  ¦  +- cartController.js
-¦  ¦  +- usersController.js
-¦  +- public/                    
-¦  ¦  +- imgShop/               # imagenes refernciadas desde mongoDB
-¦  ¦  +- img/                   # imagenes otras
-¦  ¦  +- css/                   # 
-¦  ¦     +- styles.css          # hoja de estilos
-¦  +- routes/ 
-¦  ¦  +- productsRouter.js      # Rutas de productos. REST completo para products
-¦  ¦  +- cartsRouter.js         # Rutas de carritos. REST completo para carts
-¦  ¦  +- viewsRouter.js         # Rutas para las vistas de handlebars 
-¦  ¦  +- crudUsersRouter.js     # Rutas CRUD visual para users (usa Handlebars)
-¦  ¦  +- sessionRoutes.js       #
-¦  ¦  +- userRouter.js          # Rutas REST completo para usuarios
-¦  +- services
-¦  ¦  +- cartService.js  
-¦  ¦  +- ticketService.js
-¦  ¦  +- usersService.js 
-¦  +- utils/
-¦  ¦  +- passwJwt.js            # trata hash de passwords y JWT
-¦  +- views/                     
-¦     +- layouts/               # 
-¦     ¦  +- main.handlebars     # Vistas (Handlebars)
-¦     +- home.handlebars        # Home pag . Lista la totalidad de los productos
-¦     +- realTimeProducts.handlebars # Crear/Eliminar productos usando WebSocket
-¦                                    # Se actualiza en vivo en todos los clientes
-¦     +- altaProdCart.handlebars     # Detalle de un carrito luego del alta de un producto
-¦     +- crudUsers.handlebars
-¦     +- login.handlebars
-¦     +- profile.handlebars
-¦     +- recupero.handlebars
-¦     +- register.handlebars
-¦     +- detalleProducts.handlebars  # Vista en detalle de un producto
-¦     +- homePaginando.handlebars    # Home pag con paginación
-¦     +- verProdCart.handlebars      # Vista en detalle de un carrito 
-¦
-+- .env                         # variables de entorno  (constantes)
-+- .env_copy                    # copia del .env 
-+- package.json    
-+- package-lock.json    
-+- README.md                    #
-
+¦   .env                         # variables de entorno  (constantes)
+¦   .env_copy                    # copia del .env 
+¦   package-lock.json
+¦   package.json
+¦   README.md     
+¦               
++---src
+    ¦   index.js                # main: Servidor principal
+    ¦   
+    +---config                  # archivos de configuración
+    ¦       db.js               # Conexión a Mongo usando Mongoose
+    ¦       envs.js             # aquí definimos variables de entorno
+    ¦       passportConfig.js   # Passport , Estrategia JWT, Serialización de usuario
+    ¦       
+    +---controllers
+    ¦       cartController.js
+    ¦       productsController.js
+    ¦       ticketsController.js
+    ¦       ticketService.js
+    ¦       usersController.js
+    ¦       
+    +---dao
+    ¦   ¦   cartsDao.js    
+    ¦   ¦   productsManager.js    # Clases estáticas con métodos CRUD. Plantilla
+    ¦   ¦                         #     u “objeto constructor” de "products"
+    ¦   ¦   cartsManager.js       # idem para "carts"
+    ¦   ¦   ticketDAO.js
+    ¦   ¦   ticketManager.js
+    ¦   ¦   userDao.js
+    ¦   ¦   
+    ¦   +---models
+    ¦           cartsModel.js       # cartProductSchema
+    ¦           productsModel.js    # productSchema
+    ¦           ticketModel.js
+    ¦           userModel.js        # userCollection, esquema de Usuarios
+    ¦           
+    +---dto
+    ¦       productDTO.js
+    ¦       UserDTO.js
+    ¦       
+    +---middlewares
+    ¦       auth.js
+    ¦       roles.js
+    ¦       
+    +---public
+    ¦   ¦   favicon.ico
+    ¦   +---css
+    ¦   ¦       styles.css        # hoja de estilos
+    ¦   ¦       
+    ¦   +---img                   # imagenes otras
+    ¦   +---imgShop               # imagenes refernciadas desde mongoDB
+    ¦           
+    +---routes
+    ¦       cartsRouter.js         # Rutas de carritos. REST completo para carts
+    ¦       crudUsersRouter.js     # Rutas CRUD visual para users (usa Handlebars)
+    ¦       productsRouter.js      # Rutas de productos. REST completo para products
+    ¦       sessionRoutes.js
+    ¦       ticketsRouter.js
+    ¦       userRouter.js          # Rutas REST completo para usuarios
+    ¦       viewsRouter.js         # Rutas para las vistas de handlebars 
+    ¦       
+    +---services
+    ¦       cartService.js
+    ¦       productsService.js
+    ¦       ticketService.js
+    ¦       usersService.js
+    ¦       
+    +---utils
+    ¦       passwJwt.js            # trata hash de passwords y JWT
+    ¦       socketManager.js
+    ¦       
+    +---views
+        ¦   altaProdCart.handlebars     # Detalle de un carrito luego del alta de un producto
+        ¦   crudUsers.handlebars
+        ¦   detalleProducts.handlebars  # Vista en detalle de un producto
+        ¦   home.handlebars             # Home pag . Lista la totalidad de los productos
+        ¦   homePaginando.handlebars    # Home pag con paginación
+        ¦   login.handlebars
+        ¦   profile.handlebars
+        ¦   realTimeProducts.handlebars # Crear/Eliminar productos usando WebSocket
+        ¦                               # Se actualiza en vivo en todos los clientes
+        ¦   recupero.handlebars
+        ¦   register.handlebars
+        ¦   verProdCart.handlebars      # Vista en detalle de un carrito 
+        ¦   
+        +---layouts
+                main.handlebars        # Vistas (Handlebars)
+                
 
 ```
 
@@ -134,6 +156,10 @@ Comision77155entregaFinal/
 
 ### user (`/api/users`)
 
+  - POST  /api/sessions/login
+         {"email":"carlos@correo.com","password":"mipassword"}
+  - POST /api/sessions/logout 
+  - GET /api/sessions/current     -muestra todos los atributos del usuario     
   - GET /api/users         -lista los usuarios
   - GET /api/users/:uid    -lista un usuario
   - POST /api/users         -crea un usuario

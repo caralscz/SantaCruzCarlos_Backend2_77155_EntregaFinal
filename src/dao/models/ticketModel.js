@@ -5,24 +5,22 @@
 const mongoose = require("mongoose");
 
 const ticketSchema = new mongoose.Schema({
-  code: {
-    type: String,
-    required: true,
-    unique: true
-  },
-  purchase_datetime: {
-    type: Date,
-    required: true,
-    default: Date.now
-  },
-  amount: {
-    type: Number,
-    required: true
-  },
-  purchaser: {
-    type: String,
-    required: true
-  }
-});
+  code: {type: String,required: true,unique: true },
+  purchase_datetime: {type: Date,required: true,default: Date.now  },
+  amount: {type: Number,required: true  },
+  purchaser: {type: String,required: true  },
+  cartId: { type: mongoose.Schema.Types.ObjectId, ref: 'carts', required: true },
+  products: [
+    {
+      productId: { type: mongoose.Schema.Types.ObjectId, ref: 'products' },
+      title: String,
+      quantity: Number,
+      price: Number,
+      subtotal: Number
+    }
+  ]
+}, 
+{ timestamps: true, versionKey: false });
 
-module.exports = mongoose.model("ticket", ticketSchema);
+
+module.exports = mongoose.model("ticket", ticketSchema);  // ojo no tickets

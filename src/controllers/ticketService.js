@@ -1,6 +1,6 @@
-// --------------------------------------------------------------------
+// -----------------------------------------------------------
 // src/services/ticketService.js
-// --------------------------------------------------------------------
+// -----------------------------------------------------------
 
 const TicketManager = require('../dao/ticketManager.js');
 
@@ -14,3 +14,6 @@ class TicketService {
 }
 
 module.exports = new TicketService();
+
+src/controllers/ticketsController.js
+const ticketService = require('../services/ticketService.js');

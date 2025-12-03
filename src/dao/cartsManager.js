@@ -159,7 +159,7 @@ class CartsManager {
       }));
       await cart.save({ session });
 
-      // Si no hay items comprados, no generar ticket (podés cambiar esta política).
+      // Si no hay items comprados, no generar ticket.
       if (purchased.length === 0) {
         await session.commitTransaction();
         session.endSession();
@@ -169,7 +169,8 @@ class CartsManager {
       // Creo ticket a través de TicketManager
       const ticket = await TicketManager.createTicket({
         amount: totalAmount,
-        purchaser: purchaserEmail
+        purchaser: purchaserEmail,
+        cid:cid
       });
 
       await session.commitTransaction();

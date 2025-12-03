@@ -29,13 +29,15 @@ class TicketManager {
     return `${Date.now()}`;
   }
 
-  static async createTicket({ amount, purchaser }) {
+  // creando el ticket 
+  static async createTicket({ amount, purchaser , cid}) {
     const code = await this._generateUniqueCode(8);
     const ticket = await TicketModel.create({
       code,
       purchase_datetime: new Date(),
       amount,
-      purchaser
+      purchaser,
+      cartId: cid
     });
     return ticket.toObject();
   }
